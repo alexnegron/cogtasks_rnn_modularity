@@ -1,20 +1,12 @@
-import re
 from setuptools import setup, find_packages
-import sys
-import os
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'cogtasks_rnn_modularity'))
-
-
-if sys.version_info.major != 3:
-    print('This Python is only compatible with Python 3, but you are running '
-          'Python {}. The installation will likely fail.'.format(sys.version_info.major))
-
-]
-
-setup(name='cogtasks_rnn_modularity',
-      install_requires=[
-          'numpy',
-          'matplotlib',
-      ],
-      author='Alex Negron')
+setup(
+    name='cogtasks_rnn_modularity',
+    version='1.0.0',
+    url='https://github.com/alexnegron/cogtasks_rnn_modularity.git',
+    author='Alex Negron',
+    author_email='negrona@mit.edu',
+    description='Code for modularity project',
+    packages=find_packages(),    
+    install_requires=['numpy >= 1.11.1', 'matplotlib >= 1.5.1'],
+)
