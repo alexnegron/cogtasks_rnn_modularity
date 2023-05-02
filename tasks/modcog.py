@@ -218,17 +218,33 @@ class _DMFamily(EnvWithAdditions):
         if rewards:
             self.rewards.update(rewards)
 
+        # Old fixation period was defined using lambda functions, do differently now
+        # if self.delaycomparison:
+        #     self.timing = {
+        #         'fixation': lambda: self.rng.uniform(200, 500),
+        #         'stim1': 500,
+        #         'delay': 500,
+        #         'stim2': 500,
+        #         'decision': 200}
+        # else:
+        #     self.timing = {
+        #         'fixation': lambda: self.rng.uniform(200, 500),
+        #         'stimulus': 500,
+        #         'decision': 200}
+        # if timing:
+        #     self.timing.update(timing)
 
+        f = np.random.uniform(200,500)
         if self.delaycomparison:
             self.timing = {
-                'fixation': lambda: self.rng.uniform(200, 500),
+                'fixation': f,
                 'stim1': 500,
                 'delay': 500,
                 'stim2': 500,
                 'decision': 200}
         else:
             self.timing = {
-                'fixation': lambda: self.rng.uniform(200, 500),
+                'fixation': f,
                 'stimulus': 500,
                 'decision': 200}
         if timing:
