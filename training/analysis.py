@@ -92,9 +92,8 @@ def get_activity_list(net,env,tasks,device,num_trial=500):
         perf_per_task[i] = perf
     return activity_list_all_tasks,perf_per_task
 
-
 # Activity functions with accessibility to within-period activity
-def activity_list(net, tasks, env, device, num_trial=100):
+def activity_all_list(net, tasks, env, device, num_trial=100):
     """
     Get network activity during each task over a given number of trials. 
     Returns:
@@ -166,7 +165,7 @@ def activity_by_module(net, tasks, env, device, P, num_trial=100):
         
     P = P[:, np.any(P, axis=0)]
     num_modules = P.shape[1] 
-    tmp_activity_list, activity_per_period_list, = activity_list(net, tasks, env, device, num_trial=num_trial)
+    tmp_activity_list, activity_per_period_list, = activity_all_list(net, tasks, env, device, num_trial=num_trial)
     activity_list_by_module = list() 
     activity_per_period_list_by_module = list() 
     for j in range(num_modules):
@@ -187,3 +186,22 @@ def activity_by_module(net, tasks, env, device, P, num_trial=100):
         activity_per_period_list_by_module.append((module_activity_per_period_list, neuron_idxs))
     
     return activity_list_by_module, activity_per_period_list_by_module 
+
+def get_neuron_idxs_in_big_module(P): 
+  """
+  Return the neural indices in the largest module in the cluster assignment 
+  matrix P
+  """
+  P = P[:, np.any(P, axis=0)]
+  num_modules = P.shape[1] 
+  # Find module with largest size 
+  max_size = 0
+  max_mod_idx = 0
+  for i in range(num_modules): 
+    this_size = len(np.nonzero(P[:,i])[0])
+    if this_size > max_size: 
+      max_size = this_size
+      max_mod_idx = i 
+
+  neuron_idxs = np.nonzero(P[:, max_mod_idx])[0]
+  return neuron_idxs

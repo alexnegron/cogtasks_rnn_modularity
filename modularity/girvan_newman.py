@@ -124,24 +124,8 @@ def plot_assoc(A, ax=None, lines_at=None, line_args={}, colorbar=False, vmin=0.,
     # ax.set_xticks([])
     # ax.set_yticks([])
 
-def Q_star_act_act_cor(model, N_x, envs, env, device, num_trial):
-    N_y = N_x
-    activity_list_all_tasks = [None]*len(envs)
-    len_tasks = len(envs)
-    for j in range(len_tasks):
-        env.set_i(j)
-        activity_list, trial_list, perf = get_activity(model, env, num_trial=num_trial, device=device)
-        activity_list_all_tasks[j] = activity_list
-    act_act_var = get_act_act_variances(activity_list_all_tasks, len_tasks, N_x, N_y)
-    abs_act_act_var = torch.tensor(np.abs(act_act_var), dtype=torch.float32) # use absolute value for GN score
-    act_act_var_adj = abs_act_act_var - np.diag(np.diag(abs_act_act_var))
-    clusters_p = spectral_modularity(act_act_var_adj)
-    clusters_p = clusters_p.type(torch.float32)
-    Q_score = girvan_newman(act_act_var_adj, clusters=clusters_p)
-    isrt = sort_by_cluster(clusters_p, remove_dead=True)
-    return Q_score, isrt, clusters_p, act_act_var_adj
 
-def Q_star_wTw(model): 
+def spectral_modularity_maximization(model): 
     w = torch.abs(model.rnn.h2h.weight.data)
     wT = torch.transpose(w, 0, 1) 
     wTw = (wT@w).to(torch.float32)
