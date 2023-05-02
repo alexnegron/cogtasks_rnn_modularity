@@ -153,6 +153,8 @@ class _Reach(EnvWithAdditions):
             self.add_ob(stim, 'stimulus', where='stimulus')
         else:
             periods = ['fixation', 'decision']
+            self.timing['delay'] = 0 
+            self.timing['stimuls'] = 0
             self.add_period(periods)
 
             self.add_ob(1, period='fixation', where='fixation')
