@@ -39,7 +39,9 @@ class EI_CTRNN(nn.Module):
         self.h2h = nn.Linear(hidden_size, hidden_size)
         
         if P is not None:
-          self.P = P.detach().cpu().numpy().astype(int)
+            self.P = P.detach().cpu().numpy().astype(int)
+        else: 
+            self.P = None
 
         #self.reset_parameters()
         
